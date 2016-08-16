@@ -1,0 +1,63 @@
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:*"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "redshift:DescribeClusterParameterGroups",
+        "redshift:DescribeClusterParameters",
+        "redshift:DescribeClusterSecurityGroups",
+        "redshift:DescribeClusterSnapshots",
+        "redshift:DescribeClusterSubnetGroups",
+        "redshift:DescribeClusterVersions",
+        "redshift:DescribeClusters",
+        "redshift:DescribeDefaultClusterParameters",
+        "redshift:DescribeEventCategories",
+        "redshift:DescribeEventSubscriptions",
+        "redshift:DescribeEvents",
+        "redshift:DescribeHsmClientCertificates",
+        "redshift:DescribeHsmConfigurations",
+        "redshift:DescribeLoggingStatus",
+        "redshift:DescribeOrderableClusterOptions",
+        "redshift:DescribeReservedNodeOfferings",
+        "redshift:DescribeReservedNodes",
+        "redshift:DescribeResize",
+        "redshift:DescribeTags",
+        "redshift:ViewQueriesInConsole"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::redshift-logging",
+        "arn:aws:s3:::polizei-exports",
+        "arn:aws:s3:::polizei-archives"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+          "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::redshift-logging/*",
+        "arn:aws:s3:::polizei-exports/*",
+        "arn:aws:s3:::polizei-archives/*"
+      ]
+    }
+  ]
+}
