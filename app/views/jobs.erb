@@ -34,7 +34,11 @@
               <% if run.done? %>
                 <span class="label label-success">Completed at <%= run.completed_at %> for <%= run.user.name %></span>
               <% elsif run.failed? %>
-                <span class="label label-danger">Failed at <%= run.completed_at %> for <%= run.user.name %></span>
+                <span class="label label-danger" data-toggle="tooltip"
+                    data-placement="top" title="<%= h run.error %>">
+                  Failed at <%= run.completed_at %> for <%= run.user.name %>
+                  <i class="fa fa-info-circle"></i>
+                </span>
               <% elsif run.running? %>
                 <span class="label label-warning">Running since <%= run.executed_at %> for <%= run.user.name %></span>
               <% elsif run.queued? %>

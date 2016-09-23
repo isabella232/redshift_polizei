@@ -119,6 +119,10 @@ module Models
       def queued?
         @run.queued?
       end
+
+      def error
+        @run.error
+      end
     end
   end
 end

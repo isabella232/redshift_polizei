@@ -4,6 +4,7 @@ function scrollToSelector(selector){
 }
 
 $(document).ready(function() {
+  $('[data-toggle="tooltip"]').tooltip()
   $('table#jobs > tbody > tr').click(function() {
     window.document.location = $(this).attr("href");
   });
