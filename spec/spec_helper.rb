@@ -50,10 +50,10 @@ RSpec.configure { |c|
     $config = GlobalConfig.polizei.symbolize_keys
     $config.merge!(rs_user: ActiveRecord::Base.configurations[$connection_id]['username'],
       rs_password: ActiveRecord::Base.configurations[$connection_id]['password'])
-    AWS.config({
+    Aws.config.update(
       access_key_id: $config[:aws_access_key_id],
       secret_access_key: $config[:aws_secret_access_key]
-    })
+    )
 
     # supply a RedShift connection to all tests
     $conn = RSUtil.dedicated_connection(connection_id: $connection_id,

@@ -123,10 +123,10 @@ module Jobs
       structure_options.merge!({sortstyle_override: options[:db][:sortstyle_override]}) if options[:db].key?(:sortstyle_override)
       structure_options.merge!({sortkeys_override: options[:db][:sortkeys_override]}) if options[:db].key?(:sortkeys_override)
       Jobs::TableStructureExportJob.run(job_id, user_id, structure_options)
-      ddl_obj = AWS::S3.new.buckets[archive_bucket].objects[ddl_s3_key]
+      ddl_obj = Aws::S3::Bucket.new(archive_bucket).object(ddl_s3_key)
       fail 'Failed to export DDL!' unless ddl_obj.exists?
       # ensure TableStructureExportJob outputted a single CREATE TABLE statement
-      ddl_text = ddl_obj.read
+      ddl_text = ddl_obj.get.body.read
       ddl_match = ddl_text.scan(/CREATE TABLE/mi)
       fail 'No DDL statement was exported!' if ddl_match.length < 1
       fail 'Too many DDL statements were exported!' if ddl_match.length > 1
@@ -146,7 +146,7 @@ module Jobs
       # preserve the table comment if present
       ddl_text += "\n---Table comment---\nCOMMENT ON TABLE #{full_table_name} IS '#{Desmond::PGUtil.escape_string(table_info[:comment])}';" unless table_info[:comment].nil?
 
-      ddl_obj.write(ddl_text) unless add_constraints_sql.empty? && table_info[:comment].nil?
+      ddl_obj.put(body: ddl_text) unless add_constraints_sql.empty? && table_info[:comment].nil?
 
       # export the current permissions
       perms_s3_key = "#{archive_prefix}permissions.sql"
@@ -162,8 +162,8 @@ module Jobs
       existing_table_archive = Models::TableArchive.find_by(schema_name: schema_name, table_name: table_name)
       if existing_table_archive.present? && existing_table_archive.archive_bucket.present? && existing_table_archive.archive_prefix.present?
         # delete old archive files
-        old_s3_bucket = AWS::S3.new.buckets[existing_table_archive.archive_bucket]
-        old_s3_bucket.objects.with_prefix(existing_table_archive.archive_prefix).delete_all
+        old_s3_bucket = Aws::S3::Bucket.new(existing_table_archive.archive_bucket)
+        old_s3_bucket.objects(prefix: existing_table_archive.archive_prefix).each(&:delete)
       end
       # save archive in database
       table_archive = Models::TableArchive.where(schema_name: schema_name, table_name: table_name).first_or_initialize

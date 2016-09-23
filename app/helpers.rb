@@ -14,7 +14,7 @@ module PolizeiHelpers
     s += html_options.collect{|k,v| " #{k}='#{v}'"}.join('')
     s += ">#{body}</a>"
   end
-  
+
   def h(text)
     Rack::Utils.escape_html(text)
   end
@@ -56,10 +56,10 @@ module PolizeiHelpers
     fail ArgumentError, 'No period given' if period.blank?
 
     # fighting clock drift
-    AWS::CloudWatch::Client.new.get_metric_statistics(options.merge({
+    Aws::CloudWatch::Client.new.get_metric_statistics(options.merge({
       start_time: (Time.now - period * num_safety_periods).iso8601,
       end_time:   (Time.now + period * num_safety_periods).iso8601
-    })).try(:[], :datapoints).try(:max_by) { |t| t[:timestamp] }
+    })).try(:[], :datapoints).try(:max_by) { |t| t[:timestamp] }.to_hash
   end
 
   def validate_email_list(emails, max=0)

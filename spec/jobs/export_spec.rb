@@ -25,7 +25,7 @@ describe Jobs::PolizeiExportJob do
         fetch_size: 100
     }}.deep_merge(enqueue_options))
   ensure
-    AWS::S3.new.buckets[@config[:bucket]].objects[run.filename].delete unless options[:donotdelete]
+    Aws::S3::Bucket.new(@config[:bucket]).object(run.filename).delete unless options[:donotdelete]
     c.exec("DROP TABLE IF EXISTS #{table}")
     c.close
   end
@@ -39,8 +39,8 @@ describe Jobs::PolizeiExportJob do
     s3_obj = nil
     csv = nil
     begin
-      s3_obj = AWS::S3.new.buckets[@config[:bucket]].objects[run.filename]
-      csv = s3_obj.read
+      s3_obj = Aws::S3::Bucket.new(@config[:bucket]).object(run.filename)
+      csv = s3_obj.get.body.read
     ensure
       s3_obj.delete
     end

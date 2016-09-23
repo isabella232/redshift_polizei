@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/configurations'
-require 'aws'
+require 'aws-sdk'
 
 module Sinatra
   module AWSExtension
@@ -16,11 +16,11 @@ module Sinatra
     def aws_config_file=(path)
       c = load_config_file(CONFIG_NAME, path)
       if c.has_key?('aws_access_key_id') && c.has_key?('aws_secret_access_key')
-        AWS.config({
+        Aws.config.update(
           access_key_id: c['aws_access_key_id'],
           secret_access_key: c['aws_secret_access_key'],
           region: c['aws_region'],
-        })
+        )
       end
     end
 

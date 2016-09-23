@@ -38,8 +38,8 @@ module Jobs
               choose_correct_files(filename, tmp.mtime, last_update, tmp, &block)
             end
           else
-            bucket  = AWS::S3.new.buckets[GlobalConfig.polizei('aws_redshift_audit_log_bucket')]
-            objects = bucket.objects
+            bucket  = Aws::S3::Bucket.new(GlobalConfig.polizei('aws_redshift_audit_log_bucket'))
+            objects = bucket.objects.each.to_a
             if just_one && !just_one.to_b # just_one is set, but not a boolean, so we'll try to filter by filename
               objects = objects.select { |o| File.basename(o.key) == just_one }
             end
@@ -50,7 +50,7 @@ module Jobs
               tmp = objects.sort_by { |obj| obj.last_modified }.reverse
             end
             tmp.each do |obj|
-              if choose_correct_files(obj.key, obj.last_modified, last_update, obj, &block)
+              if choose_correct_files(obj.key, obj.last_modified, last_update, obj.get.body, &block)
                 # only return if choose_correct_files returned true (actually imported the file)
                 return if just_one
               end

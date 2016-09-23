@@ -41,7 +41,7 @@ class Polizei < Sinatra::Application
       DesmondConfig.register_with_exception_notifier exp_notifier_options
     end
     # grab info about cluster once in the beginning
-    tmp_clusters = AWS::Redshift::Client.new.describe_clusters(cluster_identifier: GlobalConfig.polizei('aws_cluster_identifier'))
+    tmp_clusters = Aws::Redshift::Client.new.describe_clusters(cluster_identifier: GlobalConfig.polizei('aws_cluster_identifier'))
     set :gbl_cluster_info, tmp_clusters[:clusters][0].to_hash
   end
   # set logger in environment variable for rack to pick it up
@@ -156,7 +156,7 @@ class Polizei < Sinatra::Application
 
   get '/' do
     # overall status of cluster
-    clusters_info = AWS::Redshift::Client.new.describe_clusters(
+    clusters_info = Aws::Redshift::Client.new.describe_clusters(
       cluster_identifier: GlobalConfig.polizei('aws_cluster_identifier'))
     cluster_info  = nil
     cluster_info  = clusters_info[:clusters][0] unless clusters_info.blank?
@@ -517,7 +517,8 @@ class Polizei < Sinatra::Application
         export_format: params['export_format'],
         export_options: {
           delimiter: params['csvDelimiter'],
-          include_header: !params['csvIncludeHeader'].nil?
+          include_header: !params['csvIncludeHeader'].nil?,
+          s3_bucket: params['aws_bucket'].blank? ? nil : params['aws_bucket'],
         }
       )
     rescue ActiveRecord::RecordInvalid => e
@@ -535,7 +536,10 @@ class Polizei < Sinatra::Application
         @error = "You forgot your database credentials!"
         return erb :export, :locals => { :name => :export }
       end
-      j.enqueue(current_user, params['redshift_username'], params['redshift_password'])
+      j.enqueue(current_user, params['redshift_username'], params['redshift_password'], s3: {
+        aws_access_key_id: params['aws_access_key'].blank? ? nil : params['aws_access_key'],
+        secret_access_key: params['aws_secret_key'].blank? ? nil : params['aws_secret_key'],
+      })
     end
     redirect to('/jobs')
   end

@@ -32,14 +32,14 @@ describe Jobs::RestoreJob do
   end
 
   it 'should fail if ddl file does not exist' do
-    @bucket.objects[@ddl_file].delete
+    @bucket.object(@ddl_file).delete
     r = run_restore({db: {table: @table}, s3: {prefix: @archive_prefix}})
     expect(r.failed?).to eq(true)
     expect(r.error).to eq("S3 ddl_file #{@config[:bucket]}/#{@archive_prefix}ddl does not exist!")
   end
 
   it 'should fail if manifest file does not exist' do
-    @bucket.objects[@manifest_file].delete
+    @bucket.object(@manifest_file).delete
     r = run_restore({db: {table: @table}, s3: {prefix: @archive_prefix}})
     expect(r.failed?).to eq(true)
     expect(r.error).to eq("S3 manifest_file #{@config[:bucket]}/#{@manifest_file} does not exist!")
@@ -49,7 +49,7 @@ describe Jobs::RestoreJob do
     ddl_text = <<-TEXT
       CREATE TABLE "#{@schema}"."#{@table}FAKE"(id INT, txt VARCHAR);
     TEXT
-    @bucket.objects[@ddl_file].write(ddl_text)
+    @bucket.object(@ddl_file).put(body: ddl_text)
     r = run_restore({db: {table: @table}, s3: {prefix: @archive_prefix}})
     expect(r.failed?).to eq(true)
     expect(r.error).to eq("S3 ddl_file #{@config[:bucket]}/#{@ddl_file} must contain a single valid CREATE TABLE statement!")
@@ -114,20 +114,20 @@ describe Jobs::RestoreJob do
     @full_table_name = "#{@schema}.#{@table}"
 
     # Write sample ddl, manifest, and data files to S3.
-    @bucket = AWS::S3.new.buckets[@config[:bucket]]
+    @bucket = Aws::S3::Bucket.new(@config[:bucket])
     @archive_prefix = "test/#{@full_table_name}"
     @ddl_file = "#{@archive_prefix}ddl"
     ddl_text = <<-TEXT
       CREATE TABLE "#{@schema}"."#{@table}"(id INT IDENTITY(0,1), some_int INT, txt VARCHAR);
     TEXT
-    @bucket.objects[@ddl_file].write(ddl_text)
+    @bucket.object(@ddl_file).put(body: ddl_text)
     @perms_file = "#{@archive_prefix}permissions.sql"
     perms_text = <<-SQL
 ALTER TABLE "#{@schema}"."#{@table}" OWNER TO "#{$test_user}";
 GRANT INSERT, UPDATE, DELETE ON "#{@schema}"."#{@table}" TO GROUP "#{$test_group}";
 GRANT SELECT, REFERENCES ON "#{@schema}"."#{@table}" TO "#{$conn.user}"
 SQL
-    @bucket.objects[@perms_file].write(perms_text)
+    @bucket.object(@perms_file).put(body: perms_text)
     @data_file= "#{@archive_prefix}-0000_part_00"
     data_text = <<-TEXT
 "0"|"3"|"hello"
@@ -136,12 +136,12 @@ SQL
 "3"|"0"|"|"
   TEXT
     # data_text = "0|hello\n1|privyet\n|"
-    @bucket.objects[@data_file].write(data_text)
+    @bucket.object(@data_file).put(body: data_text)
     @manifest_file = "#{@archive_prefix}manifest"
     manifest_text = <<-JSON
       {"entries":[{"url":"s3://#{@config[:bucket]}/#{@data_file}"}]}
     JSON
-    @bucket.objects[@manifest_file].write(manifest_text)
+    @bucket.object(@manifest_file).put(body: manifest_text)
 
     # Create TableArchive entry.
     table_archive = Models::TableArchive.create(schema_name: @schema, table_name: @table,
@@ -160,6 +160,6 @@ SQL
     # Drop test redshift table.
     $conn.exec("DROP TABLE IF EXISTS #{@full_table_name}")
     # Clean up S3 files.
-    @bucket.objects.with_prefix(@archive_prefix).delete_all
+    @bucket.objects(prefix: @archive_prefix).each(&:delete)
   end
 end

@@ -31,7 +31,7 @@ All configuration files can be found in the `config/` directory.
                 - Ex: http://localhost:9999
     - For other OAuth2 providers
         - Configure the "AMG Sentry / Generic OAuth2 Provider" section
-3. Configure AWS credentials in `config/polizei.yml`
+3. Configure Aws credentials in `config/polizei.yml`
 4. Set the mail settings in `config/polizei.yml`
     - All settings will be directly injected into Pony.options
 	- You may need an application-specific password if using Google

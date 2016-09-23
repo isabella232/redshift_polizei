@@ -10,44 +10,74 @@
   <div class="form-group">
     <label for="inputJobName" class="col-sm-2 control-label">Job Name</label>
     <div class="col-sm-3">
-      <input type="text" required class="form-control" id="inputJobName" name="name" placeholder="Exporting Media Markets" value="<%= h @form['name'] %>">
+      <input type="text" required class="form-control" id="inputJobName" name="name" placeholder="Exporting Media Markets" value="<%= h @form['name'] %>" />
     </div>
   </div>
   <div class="form-group">
     <label for="inputEmailSuccess" class="col-sm-2 control-label">Success E-Mail</label>
     <div class="col-sm-3">
-      <input type="email" multiple class="form-control" id="inputEmailSuccess" name="success_email" placeholder="success@example.com" value="<%= h @form['success_email'] %>">
+      <input type="email" multiple class="form-control" id="inputEmailSuccess" name="success_email" placeholder="success@example.com" value="<%= h @form['success_email'] %>" />
     </div>
   </div>
   <div class="form-group">
     <label for="inputEmailFailure" class="col-sm-2 control-label">Failure E-Mail</label>
     <div class="col-sm-3">
-      <input type="email" multiple class="form-control" id="inputEmailFailure" name="failure_email" placeholder="failure@example.com" value="<%= h @form['failure_email'] %>">
+      <input type="email" multiple class="form-control" id="inputEmailFailure" name="failure_email" placeholder="failure@example.com" value="<%= h @form['failure_email'] %>" />
     </div>
   </div>
   <div class="form-group">
     <label for="inputPublic" class="col-sm-2 control-label">Public Job?</label>
     <div class="col-sm-3 checkbox">
-      <input type="checkbox" id="inputPublic" name="public" style="margin-left: 0;" value="true" <%= 'checked' if @form['public'] %>>
+      <input type="checkbox" id="inputPublic" name="public" style="margin-left: 0;" value="true" <%= 'checked' if @form['public'] %> />
     </div>
   </div>
-  <div class="form-group" style="border: 1px solid #ddd;">
-    <label for="inputRedshiftUsername" class="col-sm-2 control-label">Redshift Username</label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <input type="text" required class="form-control redshift_username" id="inputRedshiftUsername" name="redshift_username" placeholder="Username">
+  <div style="border: 1px solid #ddd;">
+    <div class="form-group">
+      <label for="inputRedshiftUsername" class="col-sm-2 control-label">Redshift Username</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" required class="form-control redshift_username" id="inputRedshiftUsername" name="redshift_username" placeholder="Username"/ >
           <span class="input-group-addon">
-            <input type="checkbox" checked id="rememberMe">
+            <input type="checkbox" checked id="rememberMe" />
             <label for="rememberMe"> Remember?</label>
           </span>
+        </div>
+      </div>
+      <label for="inputRedshiftPassword" class="col-sm-2 control-label">Redshift Password</label>
+      <div class="col-sm-3">
+        <input type="password" required class="form-control" id="inputRedshiftPassword" name="redshift_password">
+      </div>
+      <div class="col-sm-2">
+        <h5><span class="label label-info">not saved</span></h5>
       </div>
     </div>
-    <label for="inputRedshiftPassword" class="col-sm-2 control-label">Redshift Password</label>
-    <div class="col-sm-3">
-      <input type="password" required class="form-control" id="inputRedshiftPassword" name="redshift_password">
+    <div class="form-group">
+      <label for="inputAwsBucket" class="col-sm-2 control-label">S3 Location</label>
+      <div class="col-sm-3">
+        <button class="btn btn-default" data-toggle="collapse" href="#export-s3-location">Specify Custom S3 Location</button>
+      </div>
     </div>
-    <div class="col-sm-2">
-      <h5><span class="label label-info">not saved</span></h5>
+    <div id="export-s3-location" class="collapse">
+      <div class="form-group">
+        <div class="col-sm-offset-5"></div>
+        <label for="inputAwsBucket" class="col-sm-2 control-label">Bucket</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="inputAwsBucket" name="aws_bucket" placeholder="S3 Bucket" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAwsAccesKey" class="col-sm-2 control-label">AWS Access Key</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="inputAwsAccesKey" name="aws_access_key" placeholder="AWS Access Key" />
+        </div>
+        <label for="inputAwsSecretKey" class="col-sm-2 control-label">AWS Secret Key</label>
+        <div class="col-sm-3">
+          <input type="password" class="form-control" id="inputAwsSecretKey" name="aws_secret_key"/>
+        </div>
+        <div class="col-sm-2">
+          <h5><span class="label label-info">optional</span></h5>
+        </div>
+      </div>
     </div>
   </div>
   <div class="form-group">
@@ -58,7 +88,7 @@
   </div>
   <div class="form-group" role="navigation">
     <label for="inputExportOption" class="col-sm-2 control-label">Export options</label>
-    <input type="hidden" class="form-control" id="inputExportOption" name="export_format" value="<%= h @form['inputExportOption'] %>">
+    <input type="hidden" class="form-control" id="inputExportOption" name="export_format" value="<%= h @form['inputExportOption'] %>" />
     <div class="col-sm-10">
       <ul class="nav nav-tabs" id="export_options">
         <li role="presentation" class="export_option active"><a href="#">CSV</a></li>
@@ -77,7 +107,7 @@
         <div class="form-group">
           <div class="checkbox col-sm-offset-2 col-sm-5">
             <label for="inputCsvIncludeHeader">
-              <input type="checkbox" id="inputCsvIncludeHeader" name="csvIncludeHeader" value="true" <%= 'checked' if @form['export_options']['include_header'] %>>
+              <input type="checkbox" id="inputCsvIncludeHeader" name="csvIncludeHeader" value="true" <%= 'checked' if @form['export_options']['include_header'] %> />
               Include the header row in the export
             </label>
           </div>
@@ -86,7 +116,7 @@
     </div>
   </div>
   <div class="form-group">
-    <input type="hidden" class="form-control" id="inputExecute" name="execute" value="0">
+    <input type="hidden" class="form-control" id="inputExecute" name="execute" value="0" />
     <div class="col-sm-offset-2 col-sm-3">
       <button id="savejob" type="submit" class="btn btn-block btn-info">Save</button>
     </div>

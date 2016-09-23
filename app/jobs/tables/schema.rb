@@ -37,14 +37,14 @@ This can happen if tables get deleted during the export, so please try once more
     # success hook
     #
     def success(job_run, job_id, user_id, options={})
-      dl_url = AWS::S3.new.buckets[job_run.result['bucket']].objects[job_run.result['key']].url_for(
-        :read,
-        expires: (14 * 86400),
+      dl_url = Aws::S3::Bucket.new(job_run.result['bucket']).object(job_run.result['key']).presigned_url(
+        :get,
+        expires_in: (7 * 86400),
         response_content_type: "application/octet-stream"
       ).to_s
-      view_url = AWS::S3.new.buckets[job_run.result['bucket']].objects[job_run.result['key']].url_for(
-        :read,
-        expires: (14 * 86400)
+      view_url = Aws::S3::Bucket.new(job_run.result['bucket']).object(job_run.result['key']).presigned_url(
+        :get,
+        expires_in: (7 * 86400)
       ).to_s
       subject = "Your RedShift table schemas export succeeded"
       body = "Congrats! Your table schemas export is located

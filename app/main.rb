@@ -17,7 +17,7 @@ require 'omniauth-google-oauth2'
 require 'mail'
 require 'erubis'
 require 'coderay'
-require 'aws'
+require 'aws-sdk'
 require 'desmond'
 require 'connection_pool'
 if Sinatra::Application.environment.to_sym == :staging || Sinatra::Application.environment.to_sym == :production
@@ -35,7 +35,6 @@ require 'rack/force_chunked_response'
 
 require './app/monkey_patches'
 require './app/helpers'
-require './app/caches'
 require './app/logger'
 
 # otherwise sinatra-assetpack craps out when building assets

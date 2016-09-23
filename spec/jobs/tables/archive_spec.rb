@@ -20,9 +20,9 @@ describe Jobs::ArchiveJob do
     expect(result.result['ddl_file']).to eq("s3://#{options[:s3][:bucket]}/#{ddl_s3_key}")
 
     # Ensure S3 DDL and manifest files exist.
-    bucket = AWS::S3.new.buckets[options[:s3][:bucket]]
-    expect(bucket.objects[ddl_s3_key].exists?).to eq(true)
-    expect(bucket.objects[manifest_s3_key].exists?).to eq(true)
+    bucket = Aws::S3::Bucket.new(options[:s3][:bucket])
+    expect(bucket.object(ddl_s3_key).exists?).to eq(true)
+    expect(bucket.object(manifest_s3_key).exists?).to eq(true)
 
     # Ensure TableArchive entry was created.
     schema = options[:db][:schema]
@@ -78,7 +78,7 @@ describe Jobs::ArchiveJob do
         INSERT INTO #{@full_table_name} VALUES (0, 'hello'), (1, 'privyet'), (2, null);
     SQL
     $conn.exec(create_sql)
-    @bucket = AWS::S3.new.buckets[@config[:bucket]]
+    @bucket = Aws::S3::Bucket.new(@config[:bucket])
   end
 
   after(:each) do
@@ -86,9 +86,12 @@ describe Jobs::ArchiveJob do
     tbl = Models::TableArchive.find_by(schema_name: @schema, table_name: @table)
     tbl.destroy unless tbl.nil?
     # Drop test redshift table.
-    $conn.exec("DROP TABLE IF EXISTS #{@full_table_name} CASCADE; DROP TABLE IF EXISTS #{@full_table_name2} CASCADE;")
+    $conn.exec("DROP TABLE IF EXISTS #{@full_table_name}  CASCADE;")
+    if @full_table_name2.present?
+      $conn.exec("DROP TABLE IF EXISTS #{@full_table_name2} CASCADE;")
+    end
     # Clean up S3 archive files.
-    @bucket.objects.with_prefix(@archive_prefix).delete_all
+    @bucket.objects(prefix: @archive_prefix).each(&:delete)
   end
 
   it 'should override old TableArchive entry that already exists' do
@@ -181,7 +184,7 @@ describe Jobs::ArchiveJob do
                              s3: {prefix: @archive_prefix}})
     check_success(run_archive(options), options)
     # check archived permissions
-    sqls = AWS::S3.new.buckets[@config[:bucket]].objects[@permissions_file].read.split(";\n")
+    sqls = Aws::S3::Bucket.new(@config[:bucket]).object(@permissions_file).get.body.read.split(";\n")
     expect(sqls).to match_array([
       change_owner_sql, grant_group_sql, grant_user_sql,
       "GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON \"#{@schema}\".\"#{@table}\" TO \"#{$test_user}\""
@@ -194,7 +197,7 @@ describe Jobs::ArchiveJob do
     options = merge_options({db: {table: @table, auto_encode: true}, s3: {prefix: @archive_prefix}})
     check_success(run_archive(options), options)
     # ensure ddl file contains the comment
-    expect(@bucket.objects[@ddl_file].read).to include(add_cmt_sql)
+    expect(@bucket.object(@ddl_file).get.body.read).to include(add_cmt_sql)
   end
 
 end

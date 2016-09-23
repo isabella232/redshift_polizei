@@ -57,22 +57,22 @@ module Jobs
       ddl_file = "#{archive_prefix}ddl"
       perms_file = "#{archive_prefix}permissions.sql"
       manifest_file = "#{archive_prefix}manifest"
-      s3_bucket = AWS::S3.new.buckets[archive_bucket]
-      manifest_obj = s3_bucket.objects[manifest_file]
+      s3_bucket = Aws::S3::Bucket.new(archive_bucket)
+      manifest_obj = s3_bucket.object(manifest_file)
       fail "S3 manifest_file #{archive_bucket}/#{manifest_file} does not exist!" unless manifest_obj.exists?
 
       # get the create table statement
-      ddl_obj = s3_bucket.objects[ddl_file]
+      ddl_obj = s3_bucket.object(ddl_file)
       fail "S3 ddl_file #{archive_bucket}/#{ddl_file} does not exist!" unless ddl_obj.exists?
       # ensure create_table_statement is a single CREATE statement for the specified schema/table (for security)
-      ddl_match = /CREATE TABLE "#{Regexp.quote(schema_name)}"\."#{Regexp.quote(table_name)}".*;/m.match(ddl_obj.read)
+      ddl_match = /CREATE TABLE "#{Regexp.quote(schema_name)}"\."#{Regexp.quote(table_name)}".*;/m.match(ddl_obj.get.body.read)
       fail "S3 ddl_file #{archive_bucket}/#{ddl_file} must contain a single valid CREATE TABLE statement!" if ddl_match.nil? || ddl_match.length != 1
       create_table_statement = ddl_match[0]
 
       # get the permissions statement
-      perms_obj = s3_bucket.objects[perms_file]
+      perms_obj = s3_bucket.object(perms_file)
       fail "S3 perms_file #{archive_bucket}/#{perms_file} does not exist!" unless perms_obj.exists?
-      permissions_statements = perms_obj.read
+      permissions_statements = perms_obj.get.body.read
 
       # execute CREATE+COPY
       archive_bucket = Desmond::PGUtil.escape_string(archive_bucket)
@@ -118,7 +118,7 @@ module Jobs
       tbl.destroy! unless tbl.nil?
 
       # delete s3 archive files
-      s3_bucket.objects.with_prefix(archive_prefix).delete_all
+      s3_bucket.objects(prefix: archive_prefix).each(&:delete)
 
       # run TableReport to add the reference to this new table
       Jobs::TableReports.run(job_id, user_id, schema_name: schema_name, table_name: table_name)
