@@ -4,7 +4,10 @@ function scrollToSelector(selector){
 }
 
 $(document).ready(function() {
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip();
+  $('table#jobs').on('draw.dt', function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
   $('table#jobs > tbody > tr').click(function() {
     window.document.location = $(this).attr("href");
   });
