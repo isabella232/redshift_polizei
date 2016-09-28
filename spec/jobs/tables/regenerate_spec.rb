@@ -134,7 +134,7 @@ describe Jobs::RegenerateTableJob do
         INSERT INTO #{@full_table_name} VALUES (0, 'hello'), (1, 'privyet'), (2, null);
     SQL
     $conn.exec(create_sql)
-    @bucket = AWS::S3.new.buckets[@config[:bucket]]
+    @bucket = Aws::S3::Bucket.new(@config[:bucket])
   end
 
   after(:each) do
@@ -147,7 +147,7 @@ describe Jobs::RegenerateTableJob do
     # Drop test redshift table.
     $conn.exec("DROP TABLE IF EXISTS #{@full_table_name}")
     # Clean up S3 archive files.
-    @bucket.objects.with_prefix(@archive_prefix).delete_all
+    @bucket.objects(prefix: @archive_prefix).each(&:delete)
   end
 
 end

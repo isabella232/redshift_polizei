@@ -21,8 +21,8 @@ describe Jobs::TableStructureExportJob do
           nospacer: true,
           nomail: true
         }.merge(options))
-        s3_obj = AWS::S3.new.buckets[aws_path[:bucket]].objects[aws_path[:key]]
-        return s3_obj.read
+        s3_obj = Aws::S3::Bucket.new(aws_path[:bucket]).object(aws_path[:key])
+        return s3_obj.get.body.read
       ensure
         c.exec("DROP TABLE IF EXISTS #{@config[:schema]}.#{table_name}")
         s3_obj.delete unless s3_obj.nil?

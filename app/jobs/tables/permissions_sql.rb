@@ -51,9 +51,8 @@ module Jobs
         "GRANT #{perms_string} ON #{schema_name}.#{table_name} TO #{entity_name}"
       end
 
-      AWS::S3.new.buckets[self.options[:bucket]].objects.create(
-        self.options[:key],
-        permissions_sqls.join(";\n")
+      Aws::S3::Bucket.new(self.options[:bucket]).object(self.options[:key]).put(
+        body: permissions_sqls.join(";\n")
       )
 
       true
