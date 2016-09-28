@@ -540,7 +540,7 @@ class Polizei < Sinatra::Application
       if params['aws_access_key'].present? && params['aws_secret_key'].present?
         opts = {
           s3: {
-            aws_access_key_id: params['aws_access_key'].blank? ? nil : params['aws_access_key'],
+            access_key_id: params['aws_access_key'].blank? ? nil : params['aws_access_key'],
             secret_access_key: params['aws_secret_key'].blank? ? nil : params['aws_secret_key'],
           }
         }
