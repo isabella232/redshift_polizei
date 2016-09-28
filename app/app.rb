@@ -536,10 +536,16 @@ class Polizei < Sinatra::Application
         @error = "You forgot your database credentials!"
         return erb :export, :locals => { :name => :export }
       end
-      j.enqueue(current_user, params['redshift_username'], params['redshift_password'], s3: {
-        aws_access_key_id: params['aws_access_key'].blank? ? nil : params['aws_access_key'],
-        secret_access_key: params['aws_secret_key'].blank? ? nil : params['aws_secret_key'],
-      })
+      opts = {}
+      if params['aws_access_key'].present? && params['aws_secret_key'].present?
+        opts = {
+          s3: {
+            aws_access_key_id: params['aws_access_key'].blank? ? nil : params['aws_access_key'],
+            secret_access_key: params['aws_secret_key'].blank? ? nil : params['aws_secret_key'],
+          }
+        }
+      end
+      j.enqueue(current_user, params['redshift_username'], params['redshift_password'], opts)
     end
     redirect to('/jobs')
   end
