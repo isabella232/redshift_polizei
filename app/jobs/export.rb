@@ -13,13 +13,14 @@ module Jobs
     #
     def success(job_run, job_id, user_id, options={})
       # TODO write test that link in email is accessible
+      aws_credentials = options[:s3].select { |key| [:access_key_id, :secret_access_key].include?(key) }
       export_job = Models::ExportJob.find(job_id)
-      dl_url = Aws::S3::Bucket.new(job_run.result['bucket']).object(job_run.result['key']).presigned_url(
+      dl_url = Aws::S3::Bucket.new(job_run.result['bucket'], aws_credentials).object(job_run.result['key']).presigned_url(
         :get,
         expires_in: (7 * 86400),
         response_content_type: "application/octet-stream"
       ).to_s
-      view_url = Aws::S3::Bucket.new(job_run.result['bucket']).object(job_run.result['key']).presigned_url(
+      view_url = Aws::S3::Bucket.new(job_run.result['bucket'], aws_credentials).object(job_run.result['key']).presigned_url(
         :get,
         expires_in: (7 * 86400)
       ).to_s
