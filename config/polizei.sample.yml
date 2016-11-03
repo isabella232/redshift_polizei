@@ -37,6 +37,7 @@ development:
   cookie_secret: # secret to use for Rack session cookies
 
   deploy_server_url: polizei.example.com # url of the server to connect and deploy to
+  deploy_user: deploy # user to deploy under
   deploy_server_path: /apps/polizei # path on the server to use for deployment
 
 test:

@@ -82,7 +82,7 @@ Running tests
 
 To deploy
 ---------------------
-Make sure the deploy configuration options are set in `config/polizei.yml` (`deploy_server_url` and `deploy_server_path`), then run `cap production deploy`
+Make sure the deploy configuration options are set in `config/polizei.yml` (`deploy_server_url`, `deploy_user` and `deploy_server_path`), then run `cap production deploy`
 
 View at
 ---------------------

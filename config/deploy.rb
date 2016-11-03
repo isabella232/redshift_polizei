@@ -3,6 +3,7 @@ require './lib/global_config'
 GlobalConfig.load_config_file('deploy', 'config/polizei.yml')
 APP_NAME    = 'polizei'
 SERVER_PATH = GlobalConfig.deploy('deploy_server_path')
+SERVER_USER = GlobalConfig.deploy('deploy_user')
 fail ArgumentError, "You need to set 'deploy_server_path' in config/polizei.yml" if SERVER_PATH.blank?
 
 set :application, APP_NAME
@@ -33,7 +34,7 @@ set :keep_releases, 50
 set :bundle_without, 'development test'
 
 # RVM
-set :rvm_ruby_version, '2.3.1'
+invoke 'rvm:set_ruby_version'
 set :rvm_type, :system
 set :rvm_custom_path, '/usr/local/rvm'
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
@@ -43,11 +44,11 @@ set :scm,             :git
 set :branch,          fetch(:branch, 'stable') # Default branch
 set :deploy_to,       SERVER_PATH
 set :shared_path,     "#{fetch :deploy_to}/shared"
-set :user,            'deploy'
-set :runner,          'deploy'
+set :user,            SERVER_USER
+set :runner,          SERVER_USER
 set :use_sudo,        false
 set :ssh_options, {
-  user: 'deploy',
+  user: SERVER_USER,
   keys: [
     File.join(ENV['HOME'], '.ssh', 'id_rsa'),
     File.join(ENV['HOME'], '.ssh', 'id_amg')
