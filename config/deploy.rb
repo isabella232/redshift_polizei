@@ -33,7 +33,7 @@ set :keep_releases, 50
 set :bundle_without, 'development test'
 
 # RVM
-set :rvm_ruby_version, '2.3.1'
+invoke 'rvm:set_ruby_version'
 set :rvm_type, :system
 set :rvm_custom_path, '/usr/local/rvm'
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
@@ -47,7 +47,7 @@ set :user,            'deploy'
 set :runner,          'deploy'
 set :use_sudo,        false
 set :ssh_options, {
-  user: 'deploy',
+  user: 'amg',
   keys: [
     File.join(ENV['HOME'], '.ssh', 'id_rsa'),
     File.join(ENV['HOME'], '.ssh', 'id_amg')
