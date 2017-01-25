@@ -29,6 +29,7 @@ All configuration files can be found in the `config/` directory.
                 - Ex: http://localhost:9999/auth/google_oauth2/callback
             - Javascript Origins: {host}
                 - Ex: http://localhost:9999
+        - Detailed instructions on setting Google OAuth2 up can be found [here](https://github.com/zquestz/omniauth-google-oauth2#google-api-setup)
     - For other OAuth2 providers
         - Configure the "AMG Sentry / Generic OAuth2 Provider" section
 3. Configure Aws credentials in `config/polizei.yml`
