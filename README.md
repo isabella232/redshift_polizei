@@ -59,7 +59,7 @@ All cached and generated data can be updated using `rake reports:update`. This t
 
 There are three cronjobs running in the background to keep data up to date. They are rake tasks and can be manually run by executing
 
-- `rake redshift:auditlog:import`: Retrieves newest queries from the Redshift audit logs.
+- `rake redshift:auditlog:import`: Retrieves newest queries from the Redshift audit logs. _(Make sure Audit Logging with User Activity Logs is enabled on your cluster. More details [here](http://docs.aws.amazon.com/redshift/latest/mgmt/db-auditing.html))_
 - `rake redshift:tablereports:update`: Updates all the table statistics.
 - `rake redshift:permissions:update`: Updates permissions cached locally.
 
