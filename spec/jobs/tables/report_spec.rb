@@ -7,7 +7,7 @@ describe Jobs::TableReports do
       begin
         schema_name = options[:schema_name] || @config[:schema]
         table_name = options[:table_name] || "polizei_test_#{rand(1024)}"
-        create_sql = options[:create_sql] || "CREATE TABLE #{schema_name}.#{table_name}(id INT, txt VARCHAR)"
+        create_sql = options[:create_sql] || "CREATE TABLE #{schema_name}.#{table_name}(id INT ENCODE raw, txt VARCHAR ENCODE raw)"
         c.exec(create_sql) unless options[:donotcreate]
         Jobs::TableReports.enqueue(1, 1, { schema_name: schema_name, table_name: table_name }.merge(options))
       ensure
