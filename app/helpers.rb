@@ -59,7 +59,7 @@ module PolizeiHelpers
     Aws::CloudWatch::Client.new.get_metric_statistics(options.merge({
       start_time: (Time.now - period * num_safety_periods).iso8601,
       end_time:   (Time.now + period * num_safety_periods).iso8601
-    })).try(:[], :datapoints).try(:max_by) { |t| t[:timestamp] }.to_hash
+    })).try(:[], :datapoints).try(:max_by) { |t| t[:timestamp] }.to_h
   end
 
   def validate_email_list(emails, max=0)

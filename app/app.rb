@@ -184,7 +184,7 @@ class Polizei < Sinatra::Application
       period: 60,
       statistics: ['Average']
     })
-    cpu_computes = (cpu_per_node.map { |dp| dp[:average] }.inject{ |sum, el| sum + el }.to_f / cpu_per_node.size).round(2)
+    cpu_computes = (cpu_per_node.map { |dp| dp[:average] }.inject{ |sum, el| sum.to_f + el.to_f }.to_f / cpu_per_node.size).round(2)
 
     { cpu: { leader: cpu_leader, computes: cpu_computes }}.to_json
   end
