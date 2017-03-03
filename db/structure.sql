@@ -2,12 +2,17 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.6.1
+-- Dumped by pg_dump version 9.6.2
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -44,7 +49,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: audit_log_config; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: audit_log_config; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE audit_log_config (
@@ -76,7 +81,7 @@ ALTER SEQUENCE audit_log_config_id_seq OWNED BY audit_log_config.id;
 
 
 --
--- Name: cache; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cache; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE cache (
@@ -109,7 +114,7 @@ ALTER SEQUENCE cache_id_seq OWNED BY cache.id;
 
 
 --
--- Name: database_group_memberships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: database_group_memberships; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE database_group_memberships (
@@ -141,7 +146,7 @@ ALTER SEQUENCE database_group_memberships_id_seq OWNED BY database_group_members
 
 
 --
--- Name: database_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: database_groups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE database_groups (
@@ -173,7 +178,7 @@ ALTER SEQUENCE database_groups_id_seq OWNED BY database_groups.id;
 
 
 --
--- Name: database_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: database_users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE database_users (
@@ -206,7 +211,7 @@ ALTER SEQUENCE database_users_id_seq OWNED BY database_users.id;
 
 
 --
--- Name: desmond_job_runs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: desmond_job_runs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE desmond_job_runs (
@@ -242,7 +247,7 @@ ALTER SEQUENCE desmond_job_runs_id_seq OWNED BY desmond_job_runs.id;
 
 
 --
--- Name: export_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: export_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE export_jobs (
@@ -280,7 +285,7 @@ ALTER SEQUENCE export_jobs_id_seq OWNED BY export_jobs.id;
 
 
 --
--- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: permissions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE permissions (
@@ -320,7 +325,7 @@ ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 --
--- Name: que_jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: que_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE que_jobs (
@@ -362,7 +367,7 @@ ALTER SEQUENCE que_jobs_job_id_seq OWNED BY que_jobs.job_id;
 
 
 --
--- Name: queries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: queries; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE queries (
@@ -401,7 +406,7 @@ ALTER SEQUENCE queries_id_seq OWNED BY queries.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -410,7 +415,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: schemas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schemas; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schemas (
@@ -443,7 +448,7 @@ ALTER SEQUENCE schemas_id_seq OWNED BY schemas.id;
 
 
 --
--- Name: table_archives; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: table_archives; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE table_archives (
@@ -485,7 +490,7 @@ ALTER SEQUENCE table_archives_id_seq OWNED BY table_archives.id;
 
 
 --
--- Name: table_reports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: table_reports; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE table_reports (
@@ -528,7 +533,7 @@ ALTER SEQUENCE table_reports_id_seq OWNED BY table_reports.id;
 
 
 --
--- Name: tables; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tables; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tables (
@@ -562,7 +567,7 @@ ALTER SEQUENCE tables_id_seq OWNED BY tables.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -594,112 +599,112 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: audit_log_config id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY audit_log_config ALTER COLUMN id SET DEFAULT nextval('audit_log_config_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cache id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cache ALTER COLUMN id SET DEFAULT nextval('cache_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: database_group_memberships id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_group_memberships ALTER COLUMN id SET DEFAULT nextval('database_group_memberships_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: database_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_groups ALTER COLUMN id SET DEFAULT nextval('database_groups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: database_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_users ALTER COLUMN id SET DEFAULT nextval('database_users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: desmond_job_runs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY desmond_job_runs ALTER COLUMN id SET DEFAULT nextval('desmond_job_runs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: export_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY export_jobs ALTER COLUMN id SET DEFAULT nextval('export_jobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: permissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
 
 
 --
--- Name: job_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: que_jobs job_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY que_jobs ALTER COLUMN job_id SET DEFAULT nextval('que_jobs_job_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: queries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY queries ALTER COLUMN id SET DEFAULT nextval('queries_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: schemas id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schemas ALTER COLUMN id SET DEFAULT nextval('schemas_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: table_archives id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY table_archives ALTER COLUMN id SET DEFAULT nextval('table_archives_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: table_reports id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY table_reports ALTER COLUMN id SET DEFAULT nextval('table_reports_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tables id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tables ALTER COLUMN id SET DEFAULT nextval('tables_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: audit_log_config_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: audit_log_config audit_log_config_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY audit_log_config
@@ -707,7 +712,7 @@ ALTER TABLE ONLY audit_log_config
 
 
 --
--- Name: cache_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cache cache_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY cache
@@ -715,7 +720,7 @@ ALTER TABLE ONLY cache
 
 
 --
--- Name: database_group_memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: database_group_memberships database_group_memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_group_memberships
@@ -723,7 +728,7 @@ ALTER TABLE ONLY database_group_memberships
 
 
 --
--- Name: database_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: database_groups database_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_groups
@@ -731,7 +736,7 @@ ALTER TABLE ONLY database_groups
 
 
 --
--- Name: database_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: database_users database_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY database_users
@@ -739,7 +744,7 @@ ALTER TABLE ONLY database_users
 
 
 --
--- Name: desmond_job_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: desmond_job_runs desmond_job_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY desmond_job_runs
@@ -747,7 +752,7 @@ ALTER TABLE ONLY desmond_job_runs
 
 
 --
--- Name: export_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: export_jobs export_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY export_jobs
@@ -755,7 +760,7 @@ ALTER TABLE ONLY export_jobs
 
 
 --
--- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY permissions
@@ -763,7 +768,7 @@ ALTER TABLE ONLY permissions
 
 
 --
--- Name: que_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: que_jobs que_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY que_jobs
@@ -771,7 +776,7 @@ ALTER TABLE ONLY que_jobs
 
 
 --
--- Name: queries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: queries queries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY queries
@@ -779,7 +784,7 @@ ALTER TABLE ONLY queries
 
 
 --
--- Name: schemas_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schemas schemas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schemas
@@ -787,7 +792,7 @@ ALTER TABLE ONLY schemas
 
 
 --
--- Name: table_archives_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: table_archives table_archives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY table_archives
@@ -795,7 +800,7 @@ ALTER TABLE ONLY table_archives
 
 
 --
--- Name: table_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: table_reports table_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY table_reports
@@ -803,7 +808,7 @@ ALTER TABLE ONLY table_reports
 
 
 --
--- Name: tables_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tables tables_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tables
@@ -811,7 +816,7 @@ ALTER TABLE ONLY tables
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -819,266 +824,266 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_cache_on_hashid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_cache_on_hashid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_cache_on_hashid ON cache USING btree (hashid);
 
 
 --
--- Name: index_database_group_memberships_on_database_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_group_memberships_on_database_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_database_group_memberships_on_database_group_id ON database_group_memberships USING btree (database_group_id);
 
 
 --
--- Name: index_database_group_memberships_on_database_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_group_memberships_on_database_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_database_group_memberships_on_database_user_id ON database_group_memberships USING btree (database_user_id);
 
 
 --
--- Name: index_database_group_memberships_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_group_memberships_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_database_group_memberships_on_updated_at ON database_group_memberships USING btree (updated_at);
 
 
 --
--- Name: index_database_groups_on_database_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_groups_on_database_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_database_groups_on_database_id ON database_groups USING btree (database_id);
 
 
 --
--- Name: index_database_groups_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_groups_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_database_groups_on_name ON database_groups USING btree (name);
 
 
 --
--- Name: index_database_groups_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_groups_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_database_groups_on_updated_at ON database_groups USING btree (updated_at);
 
 
 --
--- Name: index_database_users_on_database_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_users_on_database_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_database_users_on_database_id ON database_users USING btree (database_id);
 
 
 --
--- Name: index_database_users_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_users_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_database_users_on_name ON database_users USING btree (name);
 
 
 --
--- Name: index_database_users_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_database_users_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_database_users_on_updated_at ON database_users USING btree (updated_at);
 
 
 --
--- Name: index_desmond_job_runs_on_job_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_desmond_job_runs_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_desmond_job_runs_on_job_id ON desmond_job_runs USING btree (job_id);
 
 
 --
--- Name: index_desmond_job_runs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_desmond_job_runs_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_desmond_job_runs_on_user_id ON desmond_job_runs USING btree (user_id);
 
 
 --
--- Name: index_export_jobs_on_public; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_export_jobs_on_public; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_export_jobs_on_public ON export_jobs USING btree (public);
 
 
 --
--- Name: index_export_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_export_jobs_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_export_jobs_on_user_id ON export_jobs USING btree (user_id);
 
 
 --
--- Name: index_permissions_on_dbobject_type_and_dbobject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_dbobject_type_and_dbobject_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_permissions_on_dbobject_type_and_dbobject_id ON permissions USING btree (dbobject_type, dbobject_id);
 
 
 --
--- Name: index_permissions_on_declared; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_declared; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_permissions_on_declared ON permissions USING btree (declared);
 
 
 --
--- Name: index_permissions_on_entity_type_and_entity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_entity_type_and_entity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_permissions_on_entity_type_and_entity_id ON permissions USING btree (entity_type, entity_id);
 
 
 --
--- Name: index_permissions_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_permissions_on_updated_at ON permissions USING btree (updated_at);
 
 
 --
--- Name: index_queries_on_logfile; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_queries_on_logfile; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_queries_on_logfile ON queries USING btree (logfile);
 
 
 --
--- Name: index_queries_on_query_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_queries_on_query_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_queries_on_query_type ON queries USING btree (query_type);
 
 
 --
--- Name: index_queries_on_record_time; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_queries_on_record_time; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_queries_on_record_time ON queries USING btree (record_time DESC);
 
 
 --
--- Name: index_schemas_on_database_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_schemas_on_database_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_schemas_on_database_user_id ON schemas USING btree (database_user_id);
 
 
 --
--- Name: index_schemas_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_schemas_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_schemas_on_name ON schemas USING btree (name);
 
 
 --
--- Name: index_schemas_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_schemas_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_schemas_on_updated_at ON schemas USING btree (updated_at);
 
 
 --
--- Name: index_table_archives_on_schema_name_and_table_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_table_archives_on_schema_name_and_table_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_table_archives_on_schema_name_and_table_name ON table_archives USING btree (schema_name, table_name);
 
 
 --
--- Name: index_table_reports_on_schema_name_and_table_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_table_reports_on_schema_name_and_table_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_table_reports_on_schema_name_and_table_name ON table_reports USING btree (schema_name, table_name);
 
 
 --
--- Name: index_table_reports_on_table_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_table_reports_on_table_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_table_reports_on_table_id ON table_reports USING btree (table_id);
 
 
 --
--- Name: index_tables_on_database_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tables_on_database_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_tables_on_database_user_id ON tables USING btree (database_user_id);
 
 
 --
--- Name: index_tables_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tables_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_tables_on_name ON tables USING btree (name);
 
 
 --
--- Name: index_tables_on_schema_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tables_on_schema_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_tables_on_schema_id ON tables USING btree (schema_id);
 
 
 --
--- Name: index_tables_on_updated_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tables_on_updated_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_tables_on_updated_at ON tables USING btree (updated_at);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_google_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_google_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_google_id ON users USING btree (google_id);
 
 
 --
--- Name: permissions_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: permissions_unique; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX permissions_unique ON permissions USING btree (entity_id, entity_type, dbobject_id, dbobject_type, declared);
 
 
 --
--- Name: queries_query_fts_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: queries_query_fts_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX queries_query_fts_idx ON queries USING gin (to_tsvector('english'::regconfig, "left"(query, 16384)));
 
 
 --
--- Name: queries_query_trgm_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: queries_query_trgm_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX queries_query_trgm_idx ON queries USING gin (query gin_trgm_ops);
 
 
 --
--- Name: queries_user_fts_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: queries_user_fts_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX queries_user_fts_idx ON queries USING gin (to_tsvector('english'::regconfig, ("user")::text));
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
@@ -1088,7 +1093,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -1127,6 +1132,8 @@ INSERT INTO schema_migrations (version) VALUES ('24');
 INSERT INTO schema_migrations (version) VALUES ('25');
 
 INSERT INTO schema_migrations (version) VALUES ('26');
+
+INSERT INTO schema_migrations (version) VALUES ('27');
 
 INSERT INTO schema_migrations (version) VALUES ('3');
 
