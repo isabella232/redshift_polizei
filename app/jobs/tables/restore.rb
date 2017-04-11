@@ -78,7 +78,8 @@ module Jobs
       archive_bucket = Desmond::PGUtil.escape_string(archive_bucket)
       manifest_file = Desmond::PGUtil.escape_string(manifest_file)
       access_key = Desmond::PGUtil.escape_string(access_key)
-      secret_key = Desmond::PGUtil.escape_string(secret_key)
+      access_key = Desmond::PGUtil.escape_string(access_key)
+      iam_role = Desmond::PGUtil.escape_string(GlobalConfig.polizei('aws_iam_role'))
       full_table_name = Desmond::PGUtil.get_escaped_table_name(options[:db], schema_name, table_name)
       copy_options = ''
       unless options[:copy].nil? || options[:copy].empty?
@@ -89,6 +90,16 @@ module Jobs
           copy_options += " NULL AS '#{Desmond::PGUtil.escape_string(options[:copy][:null_as])}'"
         end
       end
+      # if we have custom iam keys we use these first
+      if !access_key.nil? && !access_key.empty? && access_key != Aws.config[:access_key_id]
+        credentials_str = "CREDENTIALS 'aws_access_key_id=#{access_key};aws_secret_access_key=#{secret_key}'"
+      # if we have an iam role we use these second
+      elsif !iam_role.nil? && !iam_role.empty?
+        credentials_str = "IAM_ROLE '#{iam_role}'"
+      # otherwise we use the default system iam keys
+      else
+        credentials_str = "CREDENTIALS 'aws_access_key_id=#{access_key};aws_secret_access_key=#{secret_key}'"
+      end
 
       create_table_sql = "#{create_table_statement};"
 
@@ -98,7 +109,7 @@ module Jobs
           #{permissions_statements};
           COPY #{full_table_name}
           FROM 's3://#{archive_bucket}/#{manifest_file}'
-          CREDENTIALS 'aws_access_key_id=#{access_key};aws_secret_access_key=#{secret_key}'
+          #{credentials_str}
           MANIFEST EXPLICIT_IDS #{copy_options};
       SQL
 
