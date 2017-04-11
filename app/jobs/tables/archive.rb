@@ -44,6 +44,7 @@ module Jobs
     def execute(job_id, user_id, options={})
       fail 'No database options!' if options[:db].nil?
       fail 'No s3 options!' if options[:s3].nil?
+      options[:s3][:iam_role] = GlobalConfig.polizei('aws_iam_role')
 
       # construct full escaped table name
       schema_name = options[:db][:schema]
@@ -84,12 +85,6 @@ module Jobs
       fail 'Empty bucket name!' if archive_bucket.nil? || archive_bucket.empty?
       archive_prefix = options[:s3][:prefix]
       fail 'Empty prefix name!' if archive_prefix.nil? || archive_prefix.empty?
-
-      # s3 credentials for the bucket to unload to
-      access_key = options[:s3][:access_key_id]
-      fail 'Empty access key!' if access_key.nil? || access_key.empty?
-      secret_key = options[:s3][:secret_access_key]
-      fail 'Empty secret key!' if secret_key.nil? || secret_key.empty?
 
       # get the latest info on the table for the later TableArchive creation
       Jobs::Permissions::Update.run(user_id, schema_name: schema_name, table_name: table_name)
