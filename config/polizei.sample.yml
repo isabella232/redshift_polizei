@@ -12,6 +12,7 @@ development:
   auth_client_secret: client_secret # client secret from Google developer console
   auth_valid_domains: ['amg.tv', 'analyticsmediagroup.com'] # domains of email addresses which are allowed to log in
 
+  aws_iam_role: # aws redshift IAM role for copy and unload queries
   aws_access_key_id: access_key # aws access key to use for requests
   aws_secret_access_key: secret_key # aws secret key to use for requests
   aws_region: us-east-1 # aws region of the cluster
