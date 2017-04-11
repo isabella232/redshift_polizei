@@ -26,6 +26,7 @@ module Models
           query: self.query
         },
         s3: {
+          iam_role: GlobalConfig.polizei('aws_iam_role'),
           bucket: self.export_options['s3_bucket'] || GlobalConfig.polizei('aws_export_bucket')
         },
         csv: {

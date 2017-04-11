@@ -44,6 +44,7 @@ module Jobs
     def execute(job_id, user_id, options={})
       fail 'No database options!' if options[:db].nil?
       fail 'No s3 options!' if options[:s3].nil?
+      options[:s3][:iam_role] = GlobalConfig.polizei('aws_iam_role')
 
       # construct full escaped table name
       schema_name = options[:db][:schema]
