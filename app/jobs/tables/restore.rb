@@ -77,7 +77,7 @@ module Jobs
       manifest_file = Desmond::PGUtil.escape_string(manifest_file)
       access_key = Desmond::PGUtil.escape_string(access_key)
       secret_key = Desmond::PGUtil.escape_string(secret_key)
-      iam_role = Desmond::PGUtil.escape_string(GlobalConfig.polizei('aws_iam_role'))
+      iam_role = Desmond::PGUtil.escape_string(GlobalConfig.polizei('aws_redshift_iam_role'))
       full_table_name = Desmond::PGUtil.get_escaped_table_name(options[:db], schema_name, table_name)
       copy_options = ''
       unless options[:copy].nil? || options[:copy].empty?
