@@ -43,7 +43,7 @@
       <form class="form-horizontal" role="form" method="POST" action="<%= url '/tables/structure_export' %>" style="margin-top: 10px;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exportStructureLabel">Export the schema of all tables</h4>
+          <h4 class="modal-title" id="exportStructureLabel">Export the schema of tables</h4>
         </div>
         <div class="modal-body">
           <div id="error_alert" class="alert alert-danger" role="alert" style="display: none;"></div>
@@ -55,6 +55,8 @@
               <input type="email" multiple class="form-control" id="inputEmail" name="email" placeholder="me@example.com" value="">
             </div>
           </div>
+          <input type="hidden" name="schema_name" value="" />
+          <input type="hidden" name="table_name" value="" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -461,6 +463,8 @@
                                            end %>"
                       data-sort-keys="<%= row['sort_keys'].join(', ') %>"
                       data-has-col-encodings="<%= row['has_col_encodings'] %>"><a>Regenerate Table...</a></li>
+                  <li data-toggle="modal" data-target="#export_structure_modal" data-schema-name="<%= row['schema_name'] %>"
+                      data-table-name="<%= row['table_name'] %>"><a>Export Schema...</a></li>
                 </ul>
               </div>
             </td>

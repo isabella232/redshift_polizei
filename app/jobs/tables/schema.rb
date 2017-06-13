@@ -73,7 +73,7 @@ You can view it in your browser by using this link: #{view_url}"
       table = {}
       schema_name = options[:schema_name]
       table_name = options[:table_name]
-      table = { schema_name: schema_name, table_name: table_name } unless schema_name.nil? && table_name.nil?
+      table = { schema_name: schema_name, table_name: table_name } unless schema_name.blank? && table_name.blank?
 
       # keeping track of tables so they can be exported in the right order
       # regarding their foreign key dependencies

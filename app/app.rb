@@ -421,7 +421,13 @@ class Polizei < Sinatra::Application
     email_list = validate_email_list("#{current_user.email}, #{params[:email]}")
     status 400 if email_list.nil?
     if !email_list.nil? && Jobs::TableStructureExportJob.runs_unfinished(1, current_user.id).empty?
-      Jobs::TableStructureExportJob.enqueue(1, current_user.id, email: email_list.join(', '))
+      Jobs::TableStructureExportJob.enqueue(
+        1,
+        current_user.id,
+        email: email_list.join(', '),
+        schema_name: params[:schema_name],
+        table_name: params[:table_name]
+      )
     end
     ''
   end
