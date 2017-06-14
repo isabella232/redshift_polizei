@@ -27,10 +27,15 @@ module Jobs
           order    = options[:order].to_i if options.has_key?(:order)
           orderdir = options[:orderdir] if options.has_key?(:orderdir)
           search   = options[:search]
+          start_date = options[:start_date]
+          end_date   = options[:end_date]
+          start_date = Time.new(start_date.year, start_date.month, start_date.day, 0, 0, 0, 0).to_i if start_date.present?
+          end_date   = Time.new(end_date.year, end_date.month, end_date.day, 23, 59, 59, 0).to_i if end_date.present?
 
           # q_query is the filter query
           q_query = Models::Query
           q_query = q_query.where(query_type: 1) if not selects
+          q_query = q_query.where('record_time >= ? AND record_time <= ?', start_date, end_date) if start_date.present? && end_date.present?
           # filter by search query
           search_vec  = '' # non-quoted parts
           search_like = '' #     quoted parts
@@ -86,7 +91,7 @@ module Jobs
           else
             queries = []
           end
-          
+
           queries = {
             recordsTotal: total_count,
             recordsFiltered: filtered_count,

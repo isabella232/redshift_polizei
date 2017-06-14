@@ -2,14 +2,23 @@
   <div class="col-md-6">
     <h2 name="auditlog" id="auditlog">Audit Log</h2>
   </div>
-  <div class="col-md-6" style="text-align: right;">
-    <h3>
+  <div class="col-md-6" style="text-align: right; margin-top: 20px; margin-bottom: 10px;">
+
+    <span class="daterange btn btn-default">
+      <input type="hidden" name="start_date" value="<%= @start_date %>" />
+      <input type="hidden" name="end_date" value="<%= @end_date %>" />
+      <input type="hidden" name="max_range" value="<%= @max_range %>" />
+      <input type="hidden" name="oldest_date" value="<%= @oldest_date %>" />
+      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+      <span></span> <b class="caret"></b>
+    </span>
+
     <% if not @selects %>
-        <a href="?selects=true" style=""><span class="label label-default">Include selects</span></a>
-      <% else %>
-        <a href="?selects=false"><span class="label label-default">Exclude selects</span></a>
-      <% end %>
-    </h3>
+      <a href="?start_date=<%= @start_date %>&end_date=<%= @end_date %>&selects=true" class="btn btn-default">Include selects</a>
+    <% else %>
+      <a href="?start_date=<%= @start_date %>&end_date=<%= @end_date %>&selects=false" class="btn btn-default">Exclude selects</a>
+    <% end %>
+    <input type="hidden" name="selects" value="<%= @selects %>" />
   </div>
 </div>
 

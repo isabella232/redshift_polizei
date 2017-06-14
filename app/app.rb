@@ -84,6 +84,7 @@ class Polizei < Sinatra::Application
       '/javascripts/lib/dataTables.bootstrap.min.js',
       '/javascripts/lib/js.cookie-2.0.2.min.js',
       '/javascripts/lib/moment.min.js',
+      '/javascripts/lib/daterangepicker.js',
       '/javascripts/shared.js'
     ]
     js :tables, ['/javascripts/tables.js']
@@ -96,6 +97,7 @@ class Polizei < Sinatra::Application
       '/stylesheets/lib/font-awesome.min.css',
       '/stylesheets/lib/dataTables.bootstrap.css',
       '/stylesheets/lib/animations.css',
+      '/stylesheets/lib/daterangepicker.css',
       '/stylesheets/screen.css'
     ]
     prebuild false
@@ -209,7 +211,11 @@ class Polizei < Sinatra::Application
   end
 
   get '/auditlog' do
-    @selects = ((not params['selects'].nil?) && params['selects'] == 'true')
+    @selects    = ((not params['selects'].nil?) && params['selects'] == 'true')
+    @max_range  = Models::AuditLogConfig.get.retention_period / 86400
+    @oldest_date= (Date.today - @max_range).iso8601
+    @start_date = params[:start_date].present? ? params[:start_date] : @oldest_date
+    @end_date   = params[:end_date].present?   ? params[:end_date]   : Date.today.iso8601
     erb :auditlog, :locals => { :name => :auditlog }
   end
 
@@ -221,6 +227,8 @@ class Polizei < Sinatra::Application
     order = params['order']
     search = params['search']['value']
     selects = ((not params['selects'].nil?) && params['selects'] == 'true')
+    start_date = Date.parse(params['start_date'])
+    end_date   = Date.parse(params['end_date'])
 
     order_column = -1
     order_dir = 'desc'
@@ -229,10 +237,11 @@ class Polizei < Sinatra::Application
       order_dir = order['0']['dir']
     end
 
-    # get the rest from auit log, always needs to be executed to get accurate counts
+    # get the rest from audit log, always needs to be executed to get accurate counts
     queries_data = Jobs::Queries::AuditLog::Get.run(1,
       selects: selects, start: start, length: length,
-      order: order_column, orderdir: order_dir, search: search)
+      order: order_column, orderdir: order_dir, search: search,
+      start_date: start_date, end_date: end_date)
 
     # generate output format
     queries_data.merge(draw: draw).to_json
