@@ -155,14 +155,24 @@ $(document).ready(function() {
   });
 
   // export schemas button
-  $('#schema_export_submit').on('click', function(e) {
+  $('#export_structure_modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    $('#export_structure_modal input[name="schema_name"]').val(button.attr('data-schema-name'));
+    $('#export_structure_modal input[name="table_name"]').val(button.attr('data-table-name'));
+  });
+  $('#schema_export_submit').on('click', function(event) {
+    var $button = $(event.relatedTarget);
     $('#schema_export_submit').hide();
     $('#schema_export_loading').show();
     $('#error_alert').hide();
     $.ajax({
       "type":     'POST',
       "url":      'tables/structure_export',
-      "data":     'email=' + $('#inputEmail').val(),
+      "data":     {
+        'email': $('#inputEmail').val(),
+        'schema_name': $('#export_structure_modal input[name="schema_name"]').val(),
+        'table_name': $('#export_structure_modal input[name="table_name"]').val(),
+      },
       "cache":    false,
       "timeout":  45000,
       "success":  function (json) {
