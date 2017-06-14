@@ -227,8 +227,8 @@ class Polizei < Sinatra::Application
     order = params['order']
     search = params['search']['value']
     selects = ((not params['selects'].nil?) && params['selects'] == 'true')
-    start_date = Date.parse(params['start_date'])
-    end_date   = Date.parse(params['end_date'])
+    start_date = Date.parse(params['start_date']) if params['start_date'].present?
+    end_date   = Date.parse(params['end_date']) if params['end_date'].present?
 
     order_column = -1
     order_dir = 'desc'
