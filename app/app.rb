@@ -237,7 +237,7 @@ class Polizei < Sinatra::Application
       order_dir = order['0']['dir']
     end
 
-    # get the rest from auit log, always needs to be executed to get accurate counts
+    # get the rest from audit log, always needs to be executed to get accurate counts
     queries_data = Jobs::Queries::AuditLog::Get.run(1,
       selects: selects, start: start, length: length,
       order: order_column, orderdir: order_dir, search: search,
