@@ -1,4 +1,4 @@
-class IncreaseRetentionPeriod < ActiveRecord::Migration
+class IncreaseRetentionPeriodNo2 < ActiveRecord::Migration
   NEW_RETENTION_PERIOD = 120 * 86400 # 120 days
   OLD_RETENTION_PERIOD =  90 * 86400 #  90 days
 
