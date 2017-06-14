@@ -25,7 +25,7 @@ $(document).ready(function() {
     ]
   });
 
-  function init_datrange() {
+  function init_daterange() {
     var start  = moment($('.daterange input[name="start_date"]').val());
     var end    = moment($('.daterange input[name="end_date"]').val());
     var oldest = moment($('.daterange input[name="oldest_date"]').val());
@@ -60,5 +60,5 @@ $(document).ready(function() {
     });
     cb(start, end);
   }
-  init_datrange();
+  init_daterange();
 });
