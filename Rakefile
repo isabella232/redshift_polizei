@@ -5,9 +5,9 @@ require "sinatra/activerecord/rake"
 
 APP_FILE  = 'app/app.rb'
 APP_CLASS = 'Polizei'
-require 'sinatra/assetpack/rake'
 
 require 'desmond/rake'
+
 
 # this loads several configuration files (e.g. polizei.yml) needed in background processes,
 # so we can't just load app/main
@@ -25,7 +25,20 @@ task :environment do
   ENV["RACK_ENV"] || 'development'
 end
 
+namespace :assets do
+  desc "Compile assets"
+  task :compile do
+    environment = Polizei.assets
+    manifest = ::Sprockets::Manifest.new(environment.index, Polizei.assets_path)
+    manifest.compile(Polizei.assets_precompile)
+  end
 
+  desc "Clean assets"
+  task :clean do
+    FileUtils.rm_rf(Polizei.assets_path)
+  end
+end
+          
 namespace :reports do
   desc 'Updates the caches of all reports'
   task :update do
@@ -77,3 +90,5 @@ namespace :redshift do
     end
   end
 end
+
+

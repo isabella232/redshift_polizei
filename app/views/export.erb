@@ -131,7 +131,7 @@
 
 
 <div id="querytest_loading" style="width: 100%; text-align: center; display: none;">
-  <%= img '/images/ajax-loader.gif' %>
+  <img src="<%= image_path '/images/ajax-loader.gif' %>" />
 </div>
 
 <table id="querytest" style="display: none;" class="table table-bordered table-striped table-condensed table-hover">
@@ -139,4 +139,4 @@
   <tbody></tbody>
 </table>
 
-<%= js :jobs %>
+<%= javascript_tag 'jobs' %>

@@ -7,7 +7,8 @@ require 'global_config'
 GlobalConfig.load_config_file(:polizei, 'config/polizei.yml')
 
 require 'sinatra'
-require 'sinatra/assetpack'
+require 'sprockets'
+require 'sinatra/sprockets-helpers'
 require 'sinatra/activerecord'
 require 'sinatra/aws'
 require 'sinatra/mail'

@@ -4,11 +4,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <title>Polizei</title>
-  <link rel="shortcut icon" href="<%= image_path '/images/shield.ico' %>" />
-  <link rel="icon" type="image/png" href="<%= image_path '/images/shield.png' %>">
+  <link rel="shortcut icon" href="<%= image_path 'shield.ico' %>" />
+  <link rel="icon" type="image/png" href="<%= image_path 'shield.png' %>">
   <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic' />
-  <%= css :application, :media => 'screen' %>
-  <%= js  :application %>
+  <%= stylesheet_tag 'application', :media => 'screen' %>
+  <%= javascript_tag 'application' %>
   
 </head>
 <body id="<%= "#{name}-page" if defined? name %>">
@@ -22,7 +22,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="./"><%= img '/images/shield.png', height: '25px' %> Polizei</a>
+          <a class="navbar-brand" href="./"><img src="<%= image_path 'shield.png' %>" height="25"> Polizei</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">

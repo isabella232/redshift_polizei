@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-primary btn-default" style="margin-top: 25px;" id="update_all_tables">
       Check for new tables now
     </button>
-    <%= img '/images/ajax-loader.gif', id: "update_all_tables_loading", height: '25px', style: 'padding: 0 15px; margin-top: 25px; margin-left: 5px; display: none;' %>
+    <img src="<%= image_path '/images/ajax-loader.gif' %>" id="update_all_tables_loading" height="25" style="padding: 0 15px; margin-top: 25px; margin-left: 5px; display: none;" />
     <button type="button" class="btn btn-primary btn-default" data-toggle="modal" data-target="#export_structure_modal" style="margin-top: 25px;">
       Export all table schemas
     </button>
@@ -60,7 +60,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="schema_export_submit">Start</button><%= img '/images/ajax-loader.gif', id: "schema_export_loading", height: '25px', style: 'padding: 0 15px; margin-left: 5px; display: none;' %>
+          <button type="button" class="btn btn-primary" id="schema_export_submit">Start</button><img src="<%= image_path '/images/ajax-loader.gif' %>" id="schema_export_loading" height="25" style="padding: 0 15px; margin-left: 5px; display: none;" />
         </div>
       </form>
     </div>
@@ -440,7 +440,7 @@
     <%= h row['pct_slices_populated'].round(2) %>%</span></td>
             <td class="text-center">
               <button id="update_button_<%= i %>" type="button" data-id="<%= i %>" data-schema-name="<%= row['schema_name'] %>" data-table-name="<%= row['table_name'] %>" class="tbl-update btn btn-info btn-xs">Refresh</button>
-              <%= img '/images/ajax-loader.gif', id: "loading_img_#{i}", height: '25px', style: 'display: none;' %>
+              <img src="<%= image_path '/images/ajax-loader.gif' %> id="loading_img_<%= i %>" height="25" style="display: none;" />
               <div class="btn-group">
                 <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   More...<span class="caret"></span>
@@ -556,4 +556,4 @@
   </div>
 </div>
 
-<%= js :tables %>
+<%= javascript_tag 'tables' %>

@@ -10,7 +10,20 @@ class Polizei < Sinatra::Application
   set :root, File.dirname(__FILE__)
   set :views, "#{settings.root}/views"
   helpers PolizeiHelpers
-  register Sinatra::AssetPack
+  
+  # initialize sprockets/asset pipeline
+  register Sinatra::Sprockets::Helpers
+  set :assets, Sprockets::Environment.new(root)
+  set :assets_path, -> { File.join(public_folder, 'assets') }
+  set :assets_precompile, %w(*.css *.js *.png *.jpg *otf *.svg *.eot *.ttf *.woff)
+  # append assets paths
+  %w(stylesheets javascripts images fonts).each { |p| assets.append_path File.join(root, 'assets', p) }
+  # compress assets in staging and prod
+  if not [:development, :test].include? Sinatra::Application.environment
+    assets.js_compressor  = :uglify
+    assets.css_compressor = :scss
+  end
+  
   register Sinatra::AWSExtension
   register Sinatra::PonyMailExtension
   # temporary workaround so that Content-Length isn't messed with
@@ -41,8 +54,17 @@ class Polizei < Sinatra::Application
       DesmondConfig.register_with_exception_notifier exp_notifier_options
     end
     # grab info about cluster once in the beginning
+    Aws.use_bundled_cert!
     tmp_clusters = Aws::Redshift::Client.new.describe_clusters(cluster_identifier: GlobalConfig.polizei('aws_cluster_identifier'))
     set :gbl_cluster_info, tmp_clusters[:clusters][0].to_hash
+    
+    # Configure Sprockets::Helpers (if necessary)
+    Sprockets::Helpers.configure do |config|
+      config.environment = assets
+      config.digest      = true
+      config.public_path = public_folder
+      config.manifest = ::Sprockets::Manifest.new(assets, assets_path)
+    end
   end
   # set logger in environment variable for rack to pick it up
   before do
@@ -69,40 +91,48 @@ class Polizei < Sinatra::Application
   end
 
   # configure asset pipeline
-  assets do
-    serve '/javascripts',    from: 'assets/javascripts'
-    serve '/stylesheets',    from: 'assets/stylesheets'
-    serve '/images',         from: 'assets/images'
-    serve '/fonts',          from: 'assets/fonts'
+  # assets do
+#     serve '/javascripts',    from: 'assets/javascripts'
+#     serve '/stylesheets',    from: 'assets/stylesheets'
+#     serve '/images',         from: 'assets/images'
+#     serve '/fonts',          from: 'assets/fonts'
+#
+#     # The second parameter defines where the compressed version will be served.
+#     # (Note: that parameter is optional, AssetPack will figure it out.)
+#     js :application, [
+#       '/javascripts/lib/jquery-1.10.2.min.js',
+#       '/javascripts/lib/bootstrap.min.js',
+#       '/javascripts/lib/jquery.dataTables.min.js',
+#       '/javascripts/lib/dataTables.bootstrap.min.js',
+#       '/javascripts/lib/js.cookie-2.0.2.min.js',
+#       '/javascripts/lib/moment.min.js',
+#       '/javascripts/lib/daterangepicker.js',
+#       '/javascripts/shared.js'
+#     ]
+#     js :tables, ['/javascripts/tables.js']
+#     js :queries, ['/javascripts/queries.js']
+#     js :auditlog, ['/javascripts/auditlog.js']
+#     js :permissions, ['/javascripts/permissions.js']
+#     js :jobs, ['/javascripts/jobs.js']
+#     css :application, [
+#       '/stylesheets/lib/bootstrap.min.css',
+#       '/stylesheets/lib/font-awesome.min.css',
+#       '/stylesheets/lib/dataTables.bootstrap.css',
+#       '/stylesheets/lib/animations.css',
+#       '/stylesheets/lib/daterangepicker.css',
+#       '/stylesheets/screen.css'
+#     ]
+#     prebuild false
+#     js_compression :uglify # jsmin is unmantained and fails, yui needs java, closeure didn't try, this works
+#   end
 
-    # The second parameter defines where the compressed version will be served.
-    # (Note: that parameter is optional, AssetPack will figure it out.)
-    js :application, [
-      '/javascripts/lib/jquery-1.10.2.min.js',
-      '/javascripts/lib/bootstrap.min.js',
-      '/javascripts/lib/jquery.dataTables.min.js',
-      '/javascripts/lib/dataTables.bootstrap.min.js',
-      '/javascripts/lib/js.cookie-2.0.2.min.js',
-      '/javascripts/lib/moment.min.js',
-      '/javascripts/lib/daterangepicker.js',
-      '/javascripts/shared.js'
-    ]
-    js :tables, ['/javascripts/tables.js']
-    js :queries, ['/javascripts/queries.js']
-    js :auditlog, ['/javascripts/auditlog.js']
-    js :permissions, ['/javascripts/permissions.js']
-    js :jobs, ['/javascripts/jobs.js']
-    css :application, [
-      '/stylesheets/lib/bootstrap.min.css',
-      '/stylesheets/lib/font-awesome.min.css',
-      '/stylesheets/lib/dataTables.bootstrap.css',
-      '/stylesheets/lib/animations.css',
-      '/stylesheets/lib/daterangepicker.css',
-      '/stylesheets/screen.css'
-    ]
-    prebuild false
-    js_compression :uglify # jsmin is unmantained and fails, yui needs java, closeure didn't try, this works
-  end
+  # if Sinatra::Application.environment == :development
+#     assets.cache = Sprockets::Cache::FileStore.new('./tmp')
+#     get '/assets/*' do
+#       env['PATH_INFO'].sub!(%r{^/assets}, '')
+#       settings.assets.call(env)
+#     end
+#   end
 
   before '/*' do
     @cluster_identifier = GlobalConfig.polizei('aws_cluster_identifier')
