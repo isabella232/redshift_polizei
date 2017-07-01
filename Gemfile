@@ -12,7 +12,7 @@ gem 'sinatra-assetpack' # asset pipeline management
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'pg'
-gem 'activerecord4-redshift-adapter', github: 'aamine/activerecord4-redshift-adapter'
+gem 'activerecord4-redshift-adapter', git: 'https://github.com/aamine/activerecord4-redshift-adapter'
 gem 'coderay' # sql pretty printing
 
 gem 'aws-sdk' # redshift, cloudwatch, s3

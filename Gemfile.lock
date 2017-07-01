@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/aamine/activerecord4-redshift-adapter.git
-  revision: 1b17aa7980eabe14bb393648949f5e2e46722c4f
-  specs:
-    activerecord4-redshift-adapter (0.2.1)
-      activerecord (~> 4.2.0)
-      pg
-
-GIT
   remote: https://github.com/AnalyticsMediaGroup/desmond.git
   revision: 83fcf77946f138b34c67b0817ada2dde478a5fcc
   specs:
@@ -18,6 +10,14 @@ GIT
       pg (>= 0.17, < 0.20)
       que (~> 0.9)
       rake (~> 11.2)
+
+GIT
+  remote: https://github.com/aamine/activerecord4-redshift-adapter
+  revision: 3715772157e8de360072aa23ec5d630b9fbf3008
+  specs:
+    activerecord4-redshift-adapter (0.2.1)
+      activerecord (~> 4.2.0)
+      pg
 
 GEM
   remote: https://rubygems.org/
@@ -293,4 +293,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.13.7
+   1.15.1
